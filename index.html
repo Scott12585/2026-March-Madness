@@ -1,34 +1,68 @@
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <title>2026 March Madness - Round of 64</title>
 
-<canvas id="pdf-canvas"></canvas>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      overflow-x: auto;
+      background: #f5f5f5;
+      text-align: center;
+    }
 
-<script>
-  const url = "2026 March Madness - Round of 64.pdf";
-  const canvas = document.getElementById("pdf-canvas");
-  const context = canvas.getContext("2d");
+    canvas {
+      max-width: 100%;
+      height: auto;
+      margin-bottom: 20px;
+    }
+  </style>
 
-  pdfjsLib.getDocument(url).promise.then(pdf => {
-    pdf.getPage(1).then(page => {
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+</head>
 
-      const scale = 2.5; // increase clarity
-      const viewport = page.getViewport({ scale });
+<body>
 
-      const outputScale = window.devicePixelRatio || 1;
+  <div id="pdf-container"></div>
 
-      canvas.width = viewport.width * outputScale;
-      canvas.height = viewport.height * outputScale;
-      canvas.style.width = viewport.width + "px";
-      canvas.style.height = viewport.height + "px";
+  <script>
+    const url = "2026%20March%20Madness%20-%20Round%20of%2064.pdf";
 
-      const renderContext = {
-        canvasContext: context,
-        viewport: viewport,
-        transform: outputScale !== 1
-          ? [outputScale, 0, 0, outputScale, 0, 0]
-          : null
-      };
+    const pdfjsLib = window['pdfjs-dist/build/pdf'];
+    pdfjsLib.GlobalWorkerOptions.workerSrc =
+      "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
 
-      page.render(renderContext);
+    pdfjsLib.getDocument(url).promise.then(function (pdf) {
+
+      for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+
+        pdf.getPage(pageNum).then(function (page) {
+
+          // Higher scale = sharper rendering
+          const scale = 2;
+          const viewport = page.getViewport({ scale: scale });
+
+          const canvas = document.createElement("canvas");
+          const context = canvas.getContext("2d");
+
+          canvas.width = viewport.width;
+          canvas.height = viewport.height;
+
+          document.getElementById("pdf-container").appendChild(canvas);
+
+          const renderContext = {
+            canvasContext: context,
+            viewport: viewport
+          };
+
+          page.render(renderContext);
+        });
+      }
     });
-  });
-</script>
+  </script>
+
+</body>
+</html>

@@ -42,7 +42,7 @@
         pdf.getPage(pageNum).then(function (page) {
 
           // Higher scale = sharper rendering
-          const scale = 2;
+          const scale = 3;
           const viewport = page.getViewport({ scale: scale });
 
           const canvas = document.createElement("canvas");

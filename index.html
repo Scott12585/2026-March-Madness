@@ -26,42 +26,53 @@
 
 <body>
 
+  <div style="margin:20px;">
+    <button onclick="loadPDF('March Madness 2026 - Round of 64.pdf')">Round of 64</button>
+    <button onclick="loadPDF('March Madness 2026 - Round of 32.pdf')">Round of 32</button>
+    <button onclick="loadPDF('March Madness 2026 - Sweet Sixteen.pdf')">Sweet Sixteen</button>
+    <button onclick="loadPDF('March Madness 2026 - Elite Eight.pdf')">Elite Eight</button>
+    <button onclick="loadPDF('March Madness 2026 - Final Four.pdf')">Final Four</button>
+  </div>
+
   <div id="pdf-container"></div>
 
   <script>
-    const url = "2026%20March%20Madness%20-%20Round%20of%2064.pdf";
-
     const pdfjsLib = window['pdfjs-dist/build/pdf'];
     pdfjsLib.GlobalWorkerOptions.workerSrc =
       "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
 
-    pdfjsLib.getDocument(url).promise.then(function (pdf) {
+    function loadPDF(fileName) {
+      const container = document.getElementById("pdf-container");
+      container.innerHTML = ""; // clear previous PDF
 
-      for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+      const url = encodeURI(fileName);
 
-        pdf.getPage(pageNum).then(function (page) {
+      pdfjsLib.getDocument(url).promise.then(function (pdf) {
+        for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+          pdf.getPage(pageNum).then(function (page) {
 
-          // Higher scale = sharper rendering
-          const scale = 7;
-          const viewport = page.getViewport({ scale: scale });
+            const scale = 7;
+            const viewport = page.getViewport({ scale });
 
-          const canvas = document.createElement("canvas");
-          const context = canvas.getContext("2d");
+            const canvas = document.createElement("canvas");
+            const context = canvas.getContext("2d");
 
-          canvas.width = viewport.width;
-          canvas.height = viewport.height;
+            canvas.width = viewport.width;
+            canvas.height = viewport.height;
 
-          document.getElementById("pdf-container").appendChild(canvas);
+            container.appendChild(canvas);
 
-          const renderContext = {
-            canvasContext: context,
-            viewport: viewport
-          };
+            page.render({
+              canvasContext: context,
+              viewport: viewport
+            });
+          });
+        }
+      });
+    }
 
-          page.render(renderContext);
-        });
-      }
-    });
+    // Load default on page load
+    loadPDF('March Madness 2026 - Round of 64.pdf');
   </script>
 
 </body>

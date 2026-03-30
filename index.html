@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
-  <title>2026 March Madness - Round of 64</title>
+  <title>2026 March Madness Viewer</title>
 
   <style>
     body {
@@ -19,26 +19,28 @@
       height: auto;
       margin-bottom: 20px;
     }
+
     button {
-  background-color: #053c64;
-  color: white;
-  border: none;
-  padding: 10px 16px;
-  margin: 5px;
-  cursor: pointer;
-  border-radius: 6px;
-  font-size: 14px;
-}
+      background-color: #053c64;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      margin: 5px;
+      cursor: pointer;
+      border-radius: 6px;
+      font-size: 14px;
+    }
 
-button:hover {
-  opacity: 0.85;
-}
+    button:hover {
+      opacity: 0.85;
+    }
 
-button.active {
-  background-color: #cccccc; /* current page color */
-  color: black;
-  cursor: default;
-}
+    button.active {
+      background-color: white;
+      color: #053c64;
+      border: 2px solid #053c64;
+      cursor: default;
+    }
   </style>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
@@ -46,13 +48,13 @@ button.active {
 
 <body>
 
-<div style="margin:20px;">
-  <button onclick="selectRound(this, '2026 March Madness - Round of 64.pdf')">Round of 64</button>
-  <button onclick="selectRound(this, '2026 March Madness - Round of 32.pdf')">Round of 32</button>
-  <button onclick="selectRound(this, '2026 March Madness - Sweet Sixteen.pdf')">Sweet Sixteen</button>
-  <button onclick="selectRound(this, '2026 March Madness - Elite Eight.pdf')">Elite Eight</button>
-  <button onclick="selectRound(this, '2026 March Madness - Final Four.pdf')" id="default-btn">Final Four</button>
-</div>
+  <div style="margin:20px;">
+    <button onclick="selectRound(this, '2026 March Madness - Round of 64.pdf')">Round of 64</button>
+    <button onclick="selectRound(this, '2026 March Madness - Round of 32.pdf')">Round of 32</button>
+    <button onclick="selectRound(this, '2026 March Madness - Sweet Sixteen.pdf')">Sweet Sixteen</button>
+    <button onclick="selectRound(this, '2026 March Madness - Elite Eight.pdf')">Elite Eight</button>
+    <button onclick="selectRound(this, '2026 March Madness - Final Four.pdf')" id="default-btn">Final Four</button>
+  </div>
 
   <div id="pdf-container"></div>
 
@@ -63,7 +65,7 @@ button.active {
 
     function loadPDF(fileName) {
       const container = document.getElementById("pdf-container");
-      container.innerHTML = ""; // clear previous PDF
+      container.innerHTML = "";
 
       const url = encodeURI(fileName);
 
@@ -91,9 +93,17 @@ button.active {
       });
     }
 
-window.onload = function () {
-  loadPDF('2026 March Madness - Final Four.pdf');
-};
-</script>
+    function selectRound(btn, fileName) {
+      document.querySelectorAll("button").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      loadPDF(fileName);
+    }
+
+    window.onload = function () {
+      const defaultBtn = document.getElementById("default-btn");
+      selectRound(defaultBtn, '2026 March Madness - Final Four.pdf');
+    };
+  </script>
+
 </body>
 </html>

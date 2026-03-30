@@ -19,6 +19,26 @@
       height: auto;
       margin-bottom: 20px;
     }
+    button {
+  background-color: #053c64;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  margin: 5px;
+  cursor: pointer;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+button:hover {
+  opacity: 0.85;
+}
+
+button.active {
+  background-color: #cccccc; /* current page color */
+  color: black;
+  cursor: default;
+}
   </style>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
@@ -26,13 +46,13 @@
 
 <body>
 
-  <div style="margin:20px;">
-    <button onclick="loadPDF('2026 March Madness - Round of 64.pdf')">Round of 64</button>
-    <button onclick="loadPDF('2026 March Madness - Round of 32.pdf')">Round of 32</button>
-    <button onclick="loadPDF('2026 March Madness - Sweet Sixteen.pdf')">Sweet Sixteen</button>
-    <button onclick="loadPDF('2026 March Madness - Elite Eight.pdf')">Elite Eight</button>
-    <button onclick="loadPDF('2026 March Madness - Final Four.pdf')">Final Four</button>
-  </div>
+<div style="margin:20px;">
+  <button onclick="selectRound(this, '2026 March Madness - Round of 64.pdf')">Round of 64</button>
+  <button onclick="selectRound(this, '2026 March Madness - Round of 32.pdf')">Round of 32</button>
+  <button onclick="selectRound(this, '2026 March Madness - Sweet Sixteen.pdf')">Sweet Sixteen</button>
+  <button onclick="selectRound(this, '2026 March Madness - Elite Eight.pdf')">Elite Eight</button>
+  <button onclick="selectRound(this, '2026 March Madness - Final Four.pdf')" id="default-btn">Final Four</button>
+</div>
 
   <div id="pdf-container"></div>
 
